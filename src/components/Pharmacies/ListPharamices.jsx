@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../App";
+import axios from "axios";
 
 const ListPharamices = () => {
+  const [listPharmacies, setListPharmacies] = useState([]);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    async function getAllPharmacies() {
+      const response = await axios.get(`${API_URL}/pharmacies`);
+      if (response.status === 200) {
+        const datas = response.data;
+        setListPharmacies(datas);
+      } else setError(true);
+    }
+    getAllPharmacies();
+  }, []);
+
   return (
     <div className="container pt-3">
       <div className="card mt-5">
@@ -16,36 +32,34 @@ const ListPharamices = () => {
             <thead>
               <tr>
                 <th scope="col">Nom</th>
-                <th scope="col">اسم</th>
                 <th scope="col">Adresse</th>
-                <th scope="col">عنوان</th>
                 <th scope="col">Téléphone</th>
-                <th scope="col">هاتف</th>
+                <th scope="col">Longitude</th>
+                <th scope="col">Altitude</th>
                 <th scope="col">wilaya</th>
-                <th scope="col">الولايه</th>
                 <th scope="col">Moughataa</th>
-                <th scope="col">بلدية</th>
-                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {/* {pharmacies.map((pharmacie) => {
-                return (
-                  <tr>
-                    <th scope="row">1</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                );
-              })} */}
+              {!error ? (
+                listPharmacies.map((pharmacie) => {
+                  return (
+                    <tr key={pharmacie._id}>
+                      <td>{pharmacie.name_fr}</td>
+                      <td>{pharmacie.adress_fr}</td>
+                      <td>{pharmacie.tel}</td>
+                      <td>{pharmacie.longt}</td>
+                      <td>{pharmacie.lati}</td>
+                      <td>{pharmacie.wilaya}</td>
+                      <td>{pharmacie.moughataa}</td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <h4 className="text-center">
+                  Erreur lors du chargement des données
+                </h4>
+              )}
             </tbody>
           </table>
         </div>

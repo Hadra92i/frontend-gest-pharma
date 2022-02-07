@@ -7,6 +7,8 @@ import Navbar from './components/partials/Navbar';
 import Footer from './components/partials/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+export const API_URL = "http://localhost:5000/api";
+
 function App() {
   return (
     <>

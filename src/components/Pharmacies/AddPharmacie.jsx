@@ -1,38 +1,47 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../../App";
+import Swal from "sweetalert2";
 
 const AddPharmacie = () => {
-  const [nameFr, setNameFr] = useState("");
-  const [nameAr, setNameAr] = useState("");
-  const [adressFr, setAdressFr] = useState("");
-  const [adressAr, setAdressAr] = useState("");
-  const [wilayaFr, setWilayaFr] = useState("");
-  const [wilayaAr, setWilayaAr] = useState("");
-  const [moughataaFr, setMoughataaFr] = useState("");
-  const [moughataaAr, setMoughataaAr] = useState("");
+  const [name_fr, setNameFr] = useState("");
+  const [adress_fr, setAdressFr] = useState("");
+  const [wilaya, setWilayaFr] = useState("");
+  const [moughataa, setMoughataaFr] = useState("");
   const [tel, setTel] = useState("");
+  const [longt, setLongt] = useState("");
+  const [lati, setAlt] = useState("");
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
 
-  const addPharmacie = (e) => {
+  const addPharmacie = async (e) => {
     e.preventDefault();
-    // console.log(nameFr);
-    // console.log(nameAr);
-    // console.log(adressFr);
-    // console.log(adressAr);
-    // console.log(wilayaFr);
-    // console.log(wilayaAr);
-    // console.log(moughataaFr);
-    // console.log(moughataaAr);
-    // console.log(tel);
-
-    setNameFr("");
-    setNameAr("");
-    setAdressFr("");
-    setAdressAr("");
-    setWilayaFr("");
-    setWilayaAr("");
-    setMoughataaFr("");
-    setMoughataaAr("");
-    setTel("");
+    const data = {
+      name_fr,
+      adress_fr,
+      wilaya,
+      moughataa,
+      tel,
+      longt,
+      lati,
+    };
+    const response = await axios.post(`${API_URL}/pharmacies`, data);
+    if (response.status === 200) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Pharmacie ajoutée avec succès",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setNameFr("");
+      setAdressFr("");
+      setWilayaFr("");
+      setMoughataaFr("");
+      setTel("");
+      navigate("/");
+    } else setError(true);
   };
 
   return (
@@ -52,85 +61,41 @@ const AddPharmacie = () => {
                     placeholder="Saisir le nom de la pharmacie"
                     name="name_fr"
                     className="form-control my-2"
-                    value={nameFr}
+                    value={name_fr}
                     onChange={(e) => setNameFr(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="name_ar">اسم</label>
-                  <input
-                    type="text"
-                    placeholder="أدخل اسم الصيدلية"
-                    name="name_ar"
-                    className="form-control my-2"
-                    value={nameAr}
-                    onChange={(e) => setNameAr(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="adress">Adresse</label>
+                  <label htmlFor="adress_fr">Adresse</label>
                   <input
                     type="text"
                     placeholder="Saisir l'adresse de la pharmacie"
                     name="adress_fr"
                     className="form-control my-2"
-                    value={adressFr}
+                    value={adress_fr}
                     onChange={(e) => setAdressFr(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="adress_ar">عنوان</label>
-                  <input
-                    type="text"
-                    placeholder="أدخل عنوان الصيدلية"
-                    name="adress_ar"
-                    className="form-control my-2"
-                    value={adressAr}
-                    onChange={(e) => setAdressAr(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="wilaya_fr">Wilaya</label>
+                  <label htmlFor="wilaya">Wilaya</label>
                   <input
                     type="text"
                     placeholder="Saisir la wilaya de la pharmacie"
-                    name="wilaya_fr"
+                    name="wilaya"
                     className="form-control my-2"
-                    value={wilayaFr}
+                    value={wilaya}
                     onChange={(e) => setWilayaFr(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="wilaya_ar">الولايه</label>
-                  <input
-                    type="text"
-                    placeholder="أدخل ولاية الصيدلية"
-                    name="wilaya_ar"
-                    className="form-control my-2"
-                    value={wilayaAr}
-                    onChange={(e) => setWilayaAr(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="moughataa_fr">Moughataa</label>
+                  <label htmlFor="moughataa">Moughataa</label>
                   <input
                     type="text"
                     placeholder="Saisir la moughataa de la pharmacie"
-                    name="moughataa_fr"
+                    name="moughataa"
                     className="form-control my-2"
-                    value={moughataaFr}
+                    value={moughataa}
                     onChange={(e) => setMoughataaFr(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="moughataa_ar">Moughataa</label>
-                  <input
-                    type="text"
-                    placeholder="أدخل بلدية الصيدلية"
-                    name="moughataa_ar"
-                    className="form-control my-2"
-                    value={moughataaAr}
-                    onChange={(e) => setMoughataaAr(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -142,6 +107,28 @@ const AddPharmacie = () => {
                     className="form-control my-2"
                     value={tel}
                     onChange={(e) => setTel(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="longt">Longitude</label>
+                  <input
+                    type="text"
+                    placeholder="Saisir la Longitude"
+                    name="longt"
+                    className="form-control my-2"
+                    value={longt}
+                    onChange={(e) => setLongt(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="lati">Altitude</label>
+                  <input
+                    type="text"
+                    placeholder="Saisir l'altitude"
+                    name="lati"
+                    className="form-control my-2"
+                    value={lati}
+                    onChange={(e) => setAlt(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
